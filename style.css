@@ -9,6 +9,7 @@ html, body {
   color: #fff;
   font-size: 12pt;
   line-height: 10pt;
+  text-align: center;
 }
 canvas {
   display: block;
