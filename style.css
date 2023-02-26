@@ -7,9 +7,8 @@ html, body {
   font-family: 'Overpass Mono', monospace;
   background-color: #000;
   color: #fff;
-  /*
-  font-size: 2rem;
-  */
+  font-size: 12pt;
+  line-height: 10pt;
 }
 canvas {
   display: block;
@@ -18,7 +17,7 @@ canvas {
   background-color: #222b3d;
   color: #efefef;
   font-family: 'Overpass', sans-serif;
-  font-size: 0.3rem;
+  font-size: 12px;
 }
 
 .dingus  a {
