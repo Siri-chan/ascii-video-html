@@ -8,9 +8,14 @@ let video1;
 let looping = false;
 let video2;
 let videoNumber;
+let input;
 
 function setup() {
   noCanvas();
+	
+  input = createInput(display_chars);
+  input.addClass("dingus");	
+	
   ascii_div = createDiv();
   ascii_div.html("ASCII Video by Siri-chan");
   button1 = createButton('Loading...');
@@ -58,6 +63,9 @@ function spawn_button() {
 }
 
 function draw() {
+	
+  display_chars = input.value();	
+	
   if (!looping) return;
   if (videoNumber == 2) {
     video = video2
