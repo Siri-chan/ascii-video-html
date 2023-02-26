@@ -1,4 +1,4 @@
-const display_chars = "@#";
+let display_chars = ".#";
 
 let ascii_div;
 let button1;
