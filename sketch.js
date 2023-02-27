@@ -14,6 +14,9 @@ let play_pause;
 let _redraw;
 let paused = false;
 
+let duration_str;
+let seeker;
+
 //video width and height
 const w = 64;
 const h = 48;
@@ -43,7 +46,11 @@ function setup() {
   _redraw.parent(mediaControls);
   _redraw.addClass("media");
   _redraw.hide();
-
+  let seeker_div = createDiv("< br />");
+  seeker_div.parent(mediaControls);
+  let initial_time = createDiv("0:00");
+  initial_time.parent(seeker_div);
+  initial_time.hide();
 
   let _div = createDiv("<br />Character Set:");
   _div.parent("based");
@@ -113,6 +120,7 @@ function draw() {
   if (!looping) return;
 
   display_chars = char_input.value();
+  seeker.value = video.time();
 
   video.loadPixels();
   let html_ascii = "";
@@ -165,4 +173,22 @@ function play_video() {
   button1.remove();
   play_pause.show();
   _redraw.show();
+  initial_time.show();
+  let _duration = video.duration();
+  seeker = createSlider(0, _duration, 1, 0);
+  seeker.parent(seeker_div);
+  seeker.mouseMoved(seek);
+  seeker.mouseReleased(seek);
+  duration_str = createDiv(seconds_to_minutes(_duration));
+  duration_str.parent(seeker_div);
+}
+
+function seek() {
+  video.time(seeker.value());
+}
+
+function seconds_to_minutes(n) {
+  let minutes = n/60;
+  let seconds = n%60;
+  return str(minutes)+":"+str(seconds);
 }
