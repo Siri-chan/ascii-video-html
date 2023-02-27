@@ -68,3 +68,6 @@ button:hover {
   width: 5%;
   margin: auto;
 }
+.seeker {
+  display: inline;
+}
