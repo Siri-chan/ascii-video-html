@@ -120,7 +120,7 @@ function draw() {
   if (!looping) return;
 
   display_chars = char_input.value();
-  seeker.value = video.time();
+  seeker.value(video.time());
 
   video.loadPixels();
   let html_ascii = "";
