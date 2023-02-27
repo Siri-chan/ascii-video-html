@@ -51,8 +51,11 @@ function setup() {
   seeker_div = createDiv("<br />");
   seeker_div.parent(mediaControls);
   seeker_div.class("seeker");
+  seeker_div.addClass("media");
   initial_time = createDiv("0:00");
   initial_time.parent(seeker_div);
+  initial_time.class("seeker");
+  initial_time.addClass("media");
   initial_time.hide();
 
   let _div = createDiv("<br />Character Set:");
@@ -123,6 +126,7 @@ function draw() {
   if (!looping) return;
 
   display_chars = char_input.value();
+  initial_time.html(seconds_to_minutes(seeker.value());
 
   video.loadPixels();
   let html_ascii = "";
@@ -176,12 +180,18 @@ function play_video() {
   let _duration = video.duration();
   seeker = createSlider(0, _duration, 1, 0);
   seeker.parent(seeker_div);
+    seeker.class("seeker");
+  seeker.addClass("media");
   duration_str = createDiv(seconds_to_minutes(_duration));
   duration_str.parent(seeker_div);
+    duration_str.class("seeker");
+  duration_str.addClass("media");
   let seek_btn = createButton("Seek");
   seek_btn.parent(seeker_div);
   seek_btn.style("display:block");
   seek_btn.mousePressed(seek);
+    seek_btn.class("seeker");
+  seek_btn.addClass("media");
   looping = true;
   loop();
   video.loop();
