@@ -50,6 +50,7 @@ function setup() {
   _redraw.hide();
   seeker_div = createDiv("<br />");
   seeker_div.parent(mediaControls);
+  seeker_div.class("seeker");
   initial_time = createDiv("0:00");
   initial_time.parent(seeker_div);
   initial_time.hide();
@@ -122,7 +123,6 @@ function draw() {
   if (!looping) return;
 
   display_chars = char_input.value();
-  seeker.value(video.time());
 
   video.loadPixels();
   let html_ascii = "";
@@ -176,10 +176,12 @@ function play_video() {
   let _duration = video.duration();
   seeker = createSlider(0, _duration, 1, 0);
   seeker.parent(seeker_div);
-  seeker.mouseMoved(seek);
-  seeker.mouseReleased(seek);
   duration_str = createDiv(seconds_to_minutes(_duration));
   duration_str.parent(seeker_div);
+  let seek_btn = createButton("Seek");
+  seek_btn.parent(seeker_div);
+  seek_btn.style("display:block");
+  seek_btn.mousePressed(seek);
   looping = true;
   loop();
   video.loop();
@@ -190,7 +192,7 @@ function seek() {
 }
 
 function seconds_to_minutes(n) {
-  let minutes = n/60;
+  let minutes = floor(n/60);
   let seconds = n%60;
   return str(minutes)+":"+str(seconds);
 }
