@@ -63,7 +63,7 @@ function spawn_button() {
   button2.mousePressed(play_video2);
   button3 = createButton("Play Webcam [WIP]")
   button3.addClass('disabled');
-  button3.mousePressed(play_webcam);
+  //button3.mousePressed(play_webcam);
 }
 
 function draw() {
