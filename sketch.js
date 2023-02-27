@@ -203,6 +203,6 @@ function seek() {
 
 function seconds_to_minutes(n) {
   let minutes = floor(n/60);
-  let seconds = n%60;
+  let seconds = round(n%60, 2);
   return str(minutes)+":"+str(seconds);
 }
