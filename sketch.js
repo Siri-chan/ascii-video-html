@@ -34,8 +34,7 @@ function setup() {
   slider.mouseReleased(updateVolume);
 
 
-  //todo get media controls on the same line:
-  // also add a seek slider and stop button
+  //todo add a stop button
   let mediaControls = createDiv();
   mediaControls.parent("based");
   play_pause = createButton("Pause");
@@ -183,6 +182,7 @@ function play_video() {
   show_inline(_redraw);
   show_inline(initial_time);
   let _duration = video.duration();
+  //todo tweak seeker style
   seeker = createSlider(0, _duration, 1, 0);
   seeker.parent(seeker_div);
     seeker.class("seeker");
