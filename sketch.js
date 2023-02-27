@@ -172,11 +172,16 @@ function play_webcam() {
   //todo
 }
 
+function show_inline(element){
+    element.show();
+  element.style("display: inline;");
+}
+
 function play_video() {
   button1.remove();
-  play_pause.show();
-  _redraw.show();
-  initial_time.show();
+  show_inline(play_pause);
+  show_inline(_redraw);
+  show_inline(initial_time);
   let _duration = video.duration();
   seeker = createSlider(0, _duration, 1, 0);
   seeker.parent(seeker_div);
