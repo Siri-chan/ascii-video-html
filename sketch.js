@@ -8,6 +8,8 @@ let video;
 let looping = false;
 let videoNumber;
 let char_input;
+let slider;
+let volumeText;
 
 //video width and height
 const w = 64;
@@ -15,10 +17,21 @@ const h = 48;
 
 function setup() {
   noCanvas();
+
+  volumeText = createDiv("Volume: 100%<br />");
+  volumeText.parent("based");
+  slider = createSlider(0, 100, 100);
+  slider.parent("based");
+
+  let _div = createDiv("Character Set:");
+  _div.parent("based");
   char_input = createInput(display_chars);
+  char_input.parent("based");
   char_input.addClass("dingus");
-  ascii_div = createDiv();
-  ascii_div.html("ASCII Video by Siri-chan");
+  let _div2 = createDiv("<br />");
+  _div2.parent("based");
+  let _div3 = createDiv("<br />");
+  ascii_div = createDiv("ASCII Video by Siri-chan");
   spawn_buttons();
   //for some reason this tries to autoplay even when i explicitlyhave autoplay(false);
   looping = false;
@@ -56,8 +69,14 @@ function spawn_buttons() {
 }
 
 function draw() {
-  display_chars = char_input.value();
   if (!looping) return;
+
+  let volume = slider.value();
+  volumeText.html("Volume: " + str(volume) + "%<br />");
+  video.volume(volume/100);
+
+  display_chars = char_input.value();
+
   video.loadPixels();
   let html_ascii = "";
   for (let j = 0; j < h; j++) {
@@ -84,6 +103,8 @@ function play_video1() {
   videoNumber = 1;
   button1.html('Loading...');
   button1.addClass("disabled");
+  button2.remove();
+  button3.remove();
   video = load_lagtrain();
 }
 
@@ -91,6 +112,8 @@ function play_video2() {
   videoNumber = 2;
   button1.html('Loading...');
   button1.addClass("disabled");
+  button2.remove();
+  button3.remove();
   video = load_bad_apple();
 }
 
@@ -103,6 +126,4 @@ function play_video() {
   loop();
   video.loop();
   button1.remove();
-  button2.remove();
-  button3.remove();
 }
