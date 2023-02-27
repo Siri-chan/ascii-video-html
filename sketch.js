@@ -3,6 +3,7 @@ let display_chars = ".#";
 let ascii_div;
 let button1;
 let button2;
+let button3;
 let video;
 let video1;
 let looping = false;
@@ -60,6 +61,8 @@ function spawn_button() {
   button1.mousePressed(play_video1);
   button2 = createButton("Play Bad Apple")
   button2.mousePressed(play_video2);
+  button3 = createButton("Play Webcam")
+  button3.mousePressed(play_webcam);
 }
 
 function draw() {
@@ -69,8 +72,11 @@ function draw() {
   if (!looping) return;
   if (videoNumber == 2) {
     video = video2
-  } else {
+  } else if (videoNumber == 1) {
     video = video1
+  } else {
+    video = createCapture(VIDEO);
+  video.size(64, 48);
   }
   video.loadPixels();
   let html_ascii = "";
@@ -104,6 +110,7 @@ function play_video1() {
 	video1.loop();
     button1.remove();
   button2.remove();
+  button3.remove();
 }
 function play_video2() {
   videoNumber = 2;
@@ -112,4 +119,14 @@ function play_video2() {
 	video2.loop();
     button1.remove();
   button2.remove();
+    button3.remove();
+}
+
+function play_webcam() {
+	videoNumber = 0;
+	looping = true;
+		loop();
+    button1.remove();
+  button2.remove();
+    button3.remove();
 }
