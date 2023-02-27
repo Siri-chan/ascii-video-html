@@ -10,6 +10,9 @@ let videoNumber;
 let char_input;
 let slider;
 let volumeText;
+let play_pause;
+let _redraw;
+let paused = false;
 
 //video width and height
 const w = 64;
@@ -23,7 +26,24 @@ function setup() {
   slider = createSlider(0, 100, 100);
   slider.parent("based");
 
-  let _div = createDiv("Character Set:");
+
+  //todo get media controls on the same line:
+  // also add a seek slider and stop button
+  let mediaControls = createDiv();
+  mediaControls.parent("based");
+  play_pause = createButton("Pause");
+  play_pause.mousePressed(togglePlay);
+  play_pause.parent(mediaControls);
+  play_pause.addClass("media");
+  play_pause.hide();
+  _redraw = createButton("Redraw");
+  _redraw.mousePressed(redraw);
+  _redraw.parent(mediaControls);
+  _redraw.addClass("media");
+  _redraw.hide();
+
+
+  let _div = createDiv("<br />Character Set:");
   _div.parent("based");
   char_input = createInput(display_chars);
   char_input.parent("based");
@@ -36,6 +56,19 @@ function setup() {
   //for some reason this tries to autoplay even when i explicitlyhave autoplay(false);
   looping = false;
   noLoop();
+}
+
+function togglePlay() {
+  paused = !paused;
+  if (paused) {
+    play_pause.html("Play");
+    video.pause();
+    noLoop();
+  } else {
+    play_pause.html("Pause");
+    video.play();
+    loop();
+  }
 }
 
 function video_generics(_video) {
@@ -71,9 +104,9 @@ function spawn_buttons() {
 function draw() {
   if (!looping) return;
 
-  let volume = slider.value();
-  volumeText.html("Volume: " + str(volume) + "%<br />");
-  video.volume(volume/100);
+  let _volume = slider.value();
+  volumeText.html("Volume: " + str(_volume) + "%<br />");
+  video.volume(_volume/100);
 
   display_chars = char_input.value();
 
@@ -126,4 +159,6 @@ function play_video() {
   loop();
   video.loop();
   button1.remove();
+  play_pause.show();
+  _redraw.show();
 }
