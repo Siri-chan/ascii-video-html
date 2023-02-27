@@ -25,6 +25,8 @@ function setup() {
   volumeText.parent("based");
   slider = createSlider(0, 100, 100);
   slider.parent("based");
+  slider.mouseMoved(updateVolume);
+  slider.mouseReleased(updateVolume);
 
 
   //todo get media controls on the same line:
@@ -101,12 +103,14 @@ function spawn_buttons() {
   //button3.mousePressed(play_webcam);
 }
 
-function draw() {
-  if (!looping) return;
-
-  let _volume = slider.value();
+function updateVolume() {
+   let _volume = slider.value();
   volumeText.html("Volume: " + str(_volume) + "%<br />");
   video.volume(_volume/100);
+}
+
+function draw() {
+  if (!looping) return;
 
   display_chars = char_input.value();
 
