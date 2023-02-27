@@ -5,6 +5,7 @@ let button1;
 let button2;
 let button3;
 let video;
+let webcam_video;
 let video1;
 let looping = false;
 let video2;
@@ -36,6 +37,10 @@ function setup() {
 	video2.size(64, 48);
     video2.hide();
   video2.stop();
+  
+  webcam_video = createCapture(VIDEO, spawn_button_c);
+  webcam_video.size(64, 48);
+      webcam_video.hide();
 	
 	//for some reason this tries to autoplay even when i explicitlyhave autoplay(false);
     looping = false;
@@ -44,15 +49,20 @@ function setup() {
 
 let buttona = false;
 let buttonb = false;
+let buttonc = false;
 
 function spawn_button_a() {
-  if (buttonb) {spawn_button()} 
+  if (buttonb && buttonc) {spawn_button()} 
   else {buttona = true;}
 }
 
 function spawn_button_b() {
-   if (buttona) {spawn_button()} 
+   if (buttona && buttonc) {spawn_button()} 
   else {buttonb = true;}
+}
+function spawn_button_c() {
+  if (buttonb && buttona) {spawn_button()} 
+  else {buttonc = true;}
 }
 
 function spawn_button() {
@@ -72,12 +82,11 @@ function draw() {
 	
   if (!looping) return;
   if (videoNumber == 2) {
-    video = video2
+    video = video2;
   } else if (videoNumber == 1) {
-    video = video1
+    video = video1;
   } else {
-    video = createCapture(VIDEO);
-  video.size(64, 48);
+	video = webcam_video;
   }
   video.loadPixels();
   let html_ascii = "";
@@ -127,6 +136,7 @@ function play_webcam() {
 	videoNumber = 0;
 	looping = true;
 		loop();
+		webcam_video.play();
     button1.remove();
   button2.remove();
     button3.remove();
