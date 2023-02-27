@@ -16,6 +16,8 @@ let paused = false;
 
 let duration_str;
 let seeker;
+let initial_time;
+let seeker_div;
 
 //video width and height
 const w = 64;
@@ -46,9 +48,9 @@ function setup() {
   _redraw.parent(mediaControls);
   _redraw.addClass("media");
   _redraw.hide();
-  let seeker_div = createDiv("<br />");
+  seeker_div = createDiv("<br />");
   seeker_div.parent(mediaControls);
-  let initial_time = createDiv("0:00");
+  initial_time = createDiv("0:00");
   initial_time.parent(seeker_div);
   initial_time.hide();
 
@@ -167,9 +169,6 @@ function play_webcam() {
 }
 
 function play_video() {
-  looping = true;
-  loop();
-  video.loop();
   button1.remove();
   play_pause.show();
   _redraw.show();
@@ -181,6 +180,9 @@ function play_video() {
   seeker.mouseReleased(seek);
   duration_str = createDiv(seconds_to_minutes(_duration));
   duration_str.parent(seeker_div);
+  looping = true;
+  loop();
+  video.loop();
 }
 
 function seek() {
