@@ -46,7 +46,7 @@ function setup() {
   _redraw.parent(mediaControls);
   _redraw.addClass("media");
   _redraw.hide();
-  let seeker_div = createDiv("< br />");
+  let seeker_div = createDiv("<br />");
   seeker_div.parent(mediaControls);
   let initial_time = createDiv("0:00");
   initial_time.parent(seeker_div);
