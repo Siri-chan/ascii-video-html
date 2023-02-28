@@ -64,8 +64,8 @@ function setup() {
   _div4.parent(mediaControls);
   w_input = createInput(str(w));
   w_input.parent(mediaControls);
-  let _div3 = createDiv("x")
-  _div3.parent(mediaControls)
+  let _div5 = createDiv("x")
+  _div5.parent(mediaControls)
   h_input = createInput(str(h));
   h_input.parent(mediaControls);
   
