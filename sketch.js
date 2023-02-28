@@ -20,8 +20,11 @@ let initial_time;
 let seeker_div;
 
 //video width and height
-let w = 128;
-let h = 72;
+let w = 64;
+let h = 36;
+
+let w_input;
+let h_input;
 
 function setup() {
   noCanvas();
@@ -56,7 +59,16 @@ function setup() {
   initial_time.class("seeker");
   initial_time.addClass("media");
   initial_time.hide();
-
+  
+  let _div4 = createDiv("Resolution:<br />");
+  _div4.parent(mediaControls);
+  w_input = createInput(str(w));
+  w_input.parent(mediaControls);
+  let _div3 = createDiv("x")
+  _div3.parent(mediaControls)
+  h_input = createInput(str(h));
+  h_input.parent(mediaControls);
+  
   let _div = createDiv("<br />Character Set:");
   _div.parent("based");
   char_input = createInput(display_chars);
@@ -86,6 +98,10 @@ function togglePlay() {
 }
 
 function video_generics(_video) {
+  w = int(w_input.value());
+  h = int(h_input.value());
+  w_input.hide();
+  h_input.hide();
   _video.autoplay(false);
   //video1.volume(0);
   _video.size(w, h);
