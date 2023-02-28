@@ -18,6 +18,9 @@ let duration_str;
 let seeker;
 let initial_time;
 let seeker_div;
+let video_exists = false;
+let div4
+let div5
 
 //video width and height
 let w = 64;
@@ -60,12 +63,12 @@ function setup() {
   initial_time.addClass("media");
   initial_time.hide();
   
-  let _div4 = createDiv("Resolution:<br />");
-  _div4.parent(mediaControls);
+  div4 = createDiv("Resolution:<br />");
+  div4.parent(mediaControls);
   w_input = createInput(str(w));
   w_input.parent(mediaControls);
-  let _div5 = createDiv("x")
-  _div5.parent(mediaControls)
+  div5 = createDiv("x")
+  div5.parent(mediaControls)
   h_input = createInput(str(h));
   h_input.parent(mediaControls);
   
@@ -102,6 +105,8 @@ function video_generics(_video) {
   h = int(h_input.value());
   w_input.hide();
   h_input.hide();
+  div4.hide();
+  div5.hide();
   _video.autoplay(false);
   //video1.volume(0);
   _video.size(w, h);
@@ -134,6 +139,7 @@ function spawn_buttons() {
 function updateVolume() {
    let _volume = slider.value();
   volumeText.html("Volume: " + str(_volume) + "%<br />");
+  if (video_exists)
   video.volume(_volume/100);
 }
 
@@ -172,6 +178,7 @@ function play_video1() {
   button2.remove();
   button3.remove();
   video = load_lagtrain();
+  video_exists = true;
 }
 
 function play_video2() {
@@ -181,6 +188,7 @@ function play_video2() {
   button2.remove();
   button3.remove();
   video = load_bad_apple();
+  video_exists = true;
 }
 
 function play_webcam() {
