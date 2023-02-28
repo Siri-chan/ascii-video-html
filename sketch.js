@@ -95,7 +95,7 @@ function togglePlay() {
     noLoop();
   } else {
     play_pause.html("Pause");
-    video.play();
+    video.loop();
     loop();
   }
 }
