@@ -20,8 +20,8 @@ let initial_time;
 let seeker_div;
 
 //video width and height
-const w = 64;
-const h = 48;
+let w = 128;
+let h = 72;
 
 function setup() {
   noCanvas();
