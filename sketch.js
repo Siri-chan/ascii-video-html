@@ -181,27 +181,6 @@ function draw() {
   ascii_div.html(html_ascii);
 }
 
-//noloop still runs draw once, even if noloop is called in setup.
-function play_video1() {
-  videoNumber = 1;
-  lagtrain_button.html('Loading...');
-  lagtrain_button.addClass("disabled");
-  bad_apple_button.remove();
-  webcam_button.remove();
-  video = load_lagtrain();
-  video_exists = true;
-}
-
-function play_video2() {
-  videoNumber = 2;
-  lagtrain_button.html('Loading...');
-  lagtrain_button.addClass("disabled");
-  bad_apple_button.remove();
-  webcam_button.remove();
-  video = load_bad_apple();
-  video_exists = true;
-}
-
 function play_lagtrain() {
   videoNumber = 1;
   play_generics();
@@ -215,6 +194,15 @@ function play_badapple() {
 }
 
 function play_dropped_video(file) {
+  alert("This feature is experimental; and there are a few known bugs:\n\n"
+  + "1: If you have not clicked somewhere on the page, before dropping the video, it will not autoplay properly, and you will have to press pause, "
+  + "and then play to start the video.\n This can be fixed by clicking on the \"Drop a Video File Here\" button, before dropping the file.\n"
+  + "2: If you upload a corrupted or non-video file, the program will crash and not tell you anything about the issue.\n"
+  + "3: Automatic Looping can bug the audio. if this happens, seek to 0:00.00 and it should work again.\n"
+  + "4: The player only supports videos supported by p5.js. While I don't know every type of video p5 supports, know that MKV and WMV do not work.\n"
+  + "I suggest using ffmpeg to convert the file to MP4 or WEBM, as I know for certain they are supported.\n"
+  + "5: If you delete the video file on your computer, it will stop playing.\n\n"
+  + "By pressing OK, you are willing to try an experimental feature, and are able to fix these common bugs.");
   videoNumber = 3;
   play_generics();
   video = load_dropped_video(file);
