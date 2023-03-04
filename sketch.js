@@ -1,9 +1,10 @@
 let display_chars = ".#";
 
 let ascii_div;
-let button1;
-let button2;
-let button3;
+let lagtrain_button;
+let bad_apple_button;
+let webcam_button;
+let drop_video_button;
 let video;
 let looping = false;
 let videoNumber;
@@ -127,13 +128,23 @@ function load_bad_apple() {
 }
 
 function spawn_buttons() {
-  button1 = createButton("Play Lagtrain")
-  button1.mousePressed(play_video1);
-  button2 = createButton("Play Bad Apple")
-  button2.mousePressed(play_video2);
-  button3 = createButton("Play Webcam [WIP]")
-  button3.addClass('disabled');
+  lagtrain_button = createButton("Play Lagtrain")
+  lagtrain_button.mousePressed(play_lagtrain);
+  bad_apple_button = createButton("Play Bad Apple")
+  bad_apple_button.mousePressed(play_badapple);
+  webcam_button = createButton("Play Webcam [WIP]")
+  webcam_button.addClass('disabled');
   //button3.mousePressed(play_webcam);
+  drop_video_button = createButton("Drop a Video File Here [WIP]")
+  drop_video_button.drop(play_dropped_video);
+}
+
+function load_dropped_video(file) {
+  // file.data is the binary stream
+  // according to the docs for Element.drop() this should work
+  let _video = createVideo(file.data, play_video);
+  video_generics(_video);
+  return _video;
 }
 
 function updateVolume() {
@@ -170,24 +181,39 @@ function draw() {
   ascii_div.html(html_ascii);
 }
 
-//noloop still runs draw once, even if noloop is called in setup.
-function play_video1() {
+function play_lagtrain() {
   videoNumber = 1;
-  button1.html('Loading...');
-  button1.addClass("disabled");
-  button2.remove();
-  button3.remove();
+  play_generics();
   video = load_lagtrain();
-  video_exists = true;
 }
 
-function play_video2() {
+function play_badapple() {
   videoNumber = 2;
-  button1.html('Loading...');
-  button1.addClass("disabled");
-  button2.remove();
-  button3.remove();
+  play_generics();
   video = load_bad_apple();
+}
+
+function play_dropped_video(file) {
+  alert("This feature is experimental; and there are a few known bugs:\n\n"
+  + "1: If you have not clicked somewhere on the page, before dropping the video, it will not autoplay properly, and you will have to press pause, "
+  + "and then play to start the video.\n This can be fixed by clicking on the \"Drop a Video File Here\" button, before dropping the file.\n"
+  + "2: If you upload a corrupted or non-video file, the program will crash and not tell you anything about the issue.\n"
+  + "3: Automatic Looping can bug the audio. if this happens, seek to 0:00.00 and it should work again.\n"
+  + "4: The player only supports videos supported by p5.js. While I don't know every type of video p5 supports, know that MKV and WMV do not work.\n"
+  + "I suggest using ffmpeg to convert the file to MP4 or WEBM, as I know for certain they are supported.\n"
+  + "5: If you delete the video file on your computer, it will stop playing.\n\n"
+  + "By pressing OK, you are willing to try an experimental feature, and are able to fix these common bugs.");
+  videoNumber = 3;
+  play_generics();
+  video = load_dropped_video(file);
+}
+
+function play_generics() {
+  lagtrain_button.html('Loading...');
+  lagtrain_button.addClass("disabled");
+  bad_apple_button.remove();
+  webcam_button.remove();
+  drop_video_button.remove();
   video_exists = true;
 }
 
@@ -196,12 +222,12 @@ function play_webcam() {
 }
 
 function show_inline(element){
-    element.show();
+  element.show();
   element.style("display: inline;");
 }
 
 function play_video() {
-  button1.remove();
+  lagtrain_button.remove();
   show_inline(play_pause);
   show_inline(_redraw);
   show_inline(initial_time);
