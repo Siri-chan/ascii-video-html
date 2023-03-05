@@ -71,3 +71,15 @@ button:hover {
 .seeker {
   display: inline;
 }
+
+.drop_here {
+  width: 90%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  background-color: #222b3d;
+  color: #efa175;
+  border: 10px dashed #222b3d;
+}
+.drop_here:hover {
+  background-color: #324b4d;
+}
