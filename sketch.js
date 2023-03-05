@@ -5,6 +5,8 @@ let lagtrain_button;
 let bad_apple_button;
 let webcam_button;
 let drop_video_button;
+let drop_image_button;
+let drop_button;
 let video;
 let looping = false;
 let videoNumber;
@@ -14,6 +16,8 @@ let volumeText;
 let play_pause;
 let _redraw;
 let paused = false;
+let drop_item_is_video = true;
+let _divN;
 
 let duration_str;
 let seeker;
@@ -135,15 +139,56 @@ function spawn_buttons() {
   webcam_button = createButton("Play Webcam [WIP]")
   webcam_button.addClass('disabled');
   //button3.mousePressed(play_webcam);
-  drop_video_button = createButton("Drop a Video File Here [WIP]")
-  drop_video_button.drop(play_dropped_video);
+  /*
+  drop_image_button = createButton("Drop an Image File")
+  drop_image_button.mousePressed(clickImageDropButton);
+  show_inline(drop_image_button);
+  drop_image_button.style("width: 50%;")
+  */
+  drop_video_button = createButton("Drop a Video File")
+  drop_video_button.mousePressed(clickVideoDropButton);
+  show_inline(drop_video_button);
+  drop_video_button.style("width: 50%;")
+  drop_button
+}
+
+function clickImageDropButton() {
+  drop_item_is_video = false; 
+  clickDropButton();
+}
+function clickVideoDropButton() {
+  drop_item_is_video = true;
+  clickDropButton();
+}
+
+function clickDropButton() {
+  drop_video_button.remove();
+  drop_image_button.remove();
+  let _divN = createDiv("<br />");
+  drop_button = createButton("Drop a File Here")
+  drop_button.drop(play_dropped_video);
+  drop_button.class("drop_here");
 }
 
 function load_dropped_video(file) {
   // file.data is the binary stream
   // according to the docs for Element.drop() this should work
-  let _video = createVideo(file.data, play_video);
-  video_generics(_video);
+  drop_button.remove();
+  let _video;
+  if (drop_item_is_video) {
+    _video = createVideo(file.data, play_video);
+    video_generics(_video);
+  } else {
+    _video - loadImage(file.data, play_video);
+    w = int(w_input.value());
+    h = int(h_input.value());
+    w_input.hide();
+    h_input.hide();
+    div4.hide();
+    div5.hide();
+    _video.size(w, h);
+    _video.hide();
+  }
   return _video;
 }
 
@@ -206,6 +251,7 @@ function play_dropped_video(file) {
   videoNumber = 3;
   play_generics();
   video = load_dropped_video(file);
+  _divN.remove();
 }
 
 function play_generics() {
@@ -231,22 +277,24 @@ function play_video() {
   show_inline(play_pause);
   show_inline(_redraw);
   show_inline(initial_time);
-  let _duration = video.duration();
-  //todo tweak seeker style
-  seeker = createSlider(0, _duration, 1, 0);
-  seeker.parent(seeker_div);
+  if (drop_item_is_video) {
+    let _duration = video.duration();
+    //todo tweak seeker style
+    seeker = createSlider(0, _duration, 1, 0);
+    seeker.parent(seeker_div);
     seeker.class("seeker");
-  seeker.addClass("media");
-  duration_str = createDiv(seconds_to_minutes(_duration));
-  duration_str.parent(seeker_div);
+    seeker.addClass("media");
+    duration_str = createDiv(seconds_to_minutes(_duration));
+    duration_str.parent(seeker_div);
     duration_str.class("seeker");
-  duration_str.addClass("media");
-  let seek_btn = createButton("Seek");
-  seek_btn.parent(seeker_div);
-  seek_btn.style("display:block");
-  seek_btn.mousePressed(seek);
+    duration_str.addClass("media");
+    let seek_btn = createButton("Seek");
+    seek_btn.parent(seeker_div);
+    seek_btn.style("display:block");
+    seek_btn.mousePressed(seek);
     seek_btn.class("seeker");
-  seek_btn.addClass("media");
+    seek_btn.addClass("media");
+  }
   looping = true;
   loop();
   video.loop();
