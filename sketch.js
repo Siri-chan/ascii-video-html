@@ -216,7 +216,7 @@ function draw() {
       const a = video.pixels[pixelIndex + 3];
       let avg = (r + g + b) / (a / 255);
       if (r != 0 && g != 0 && b != 0) {
-        avg -= 0.001;
+        avg = constrain(avg, 0, 764.9);
       }
       const len = display_chars.length;
       let charIndex = floor(map(avg, 0, 765, 0, len));
