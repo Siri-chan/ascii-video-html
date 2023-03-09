@@ -214,10 +214,13 @@ function draw() {
       const g = video.pixels[pixelIndex + 1];
       const b = video.pixels[pixelIndex + 2];
       const a = video.pixels[pixelIndex + 3];
-      const avg = (r + g + b) / (3 * (a / 255));
+      let avg = (r + g + b) / (a / 255);
+      if (r != 0 && g != 0 && b != 0) {
+        avg -= 0.001;
+      }
       const len = display_chars.length;
-      const charIndex = floor(map(avg, 0, 255, 0, len));
-      const cchar = display_chars.charAt(charIndex);
+      let charIndex = floor(map(avg, 0, 765, 0, len));
+      let cchar = display_chars.charAt(charIndex);
       if (cchar == " ") html_ascii += "&nbsp;";
       else html_ascii += cchar;
     }
