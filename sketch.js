@@ -283,6 +283,7 @@ function play_video() {
     //todo tweak seeker style
     seeker = createSlider(0, _duration, 1, 0);
     seeker.parent(seeker_div);
+    //todo make seeker have onchange rather than checking every update + also use a nicer monospace ffont for the time display
     seeker.class("seeker");
     seeker.addClass("media");
     duration_str = createDiv(seconds_to_minutes(_duration));
@@ -291,7 +292,7 @@ function play_video() {
     duration_str.addClass("media");
     let seek_btn = createButton("Seek");
     seek_btn.parent(seeker_div);
-    seek_btn.style("display:block");
+    seek_btn.style("display:block; font-family: 'Overpass', sans-serif; font-size: 10px");
     seek_btn.mousePressed(seek);
     seek_btn.class("seeker");
     seek_btn.addClass("media");
@@ -311,7 +312,11 @@ function seconds_to_minutes(n) {
   let ms = floor(((n%60) * 100) - (seconds * 100));
   let seconds_str = str(seconds);
   if (seconds < 10) {
-    seconds_str = "0"+str(seconds);
+    seconds_str = "0" + seconds_str;
   }
-  return str(minutes)+":"+seconds_str+"."+str(ms);
+  let ms_str = str(ms);
+  if (ms < 10) {
+    ms_str = "0" + ms_str;
+  }
+  return str(minutes)+":"+seconds_str+"."+ms_str;
 }
