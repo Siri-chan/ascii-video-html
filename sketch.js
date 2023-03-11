@@ -1,38 +1,42 @@
-let display_chars = ".#";
-
+// DOM Elements
 let ascii_div;
 let lagtrain_button;
 let bad_apple_button;
 let webcam_button;
 let drop_video_button;
-let drop_image_button;
+// todo implement algorithm for images
+//let drop_image_button;
+let duration_str;
 let drop_button;
-let video;
-let looping = false;
-let videoNumber;
 let char_input;
 let slider;
 let volumeText;
 let play_pause;
 let _redraw;
-let paused = false;
-let drop_item_is_video = true;
 let _divN;
-
-let duration_str;
 let seeker;
 let initial_time;
-let seeker_div;
-let video_exists = false;
 let div4
 let div5
-
-//video width and height
-let w = 64;
-let h = 36;
-
+let seeker_div;
 let w_input;
 let h_input;
+
+// Render Parameters
+let display_chars = ".#";
+let width = 64;
+let height = 36;
+
+// Playback Variables
+let video;
+let looping = false;
+let videoNumber;
+let paused = false;
+
+// Other
+let drop_item_is_video = true;
+let video_exists = false;
+
 
 function setup() {
   noCanvas();
@@ -70,11 +74,11 @@ function setup() {
   
   div4 = createDiv("Resolution:<br />");
   div4.parent(mediaControls);
-  w_input = createInput(str(w));
+  w_input = createInput(str(width));
   w_input.parent(mediaControls);
   div5 = createDiv("x")
   div5.parent(mediaControls)
-  h_input = createInput(str(h));
+  h_input = createInput(str(height));
   h_input.parent(mediaControls);
   
   let _div = createDiv("<br />Character Set:");
@@ -106,15 +110,15 @@ function togglePlay() {
 }
 
 function video_generics(_video) {
-  w = int(w_input.value());
-  h = int(h_input.value());
+  width = int(w_input.value());
+  height = int(h_input.value());
   w_input.hide();
   h_input.hide();
   div4.hide();
   div5.hide();
   _video.autoplay(false);
   //video1.volume(0);
-  _video.size(w, h);
+  _video.size(width, height);
   _video.hide();
   _video.stop();
 }
@@ -180,13 +184,13 @@ function load_dropped_video(file) {
     video_generics(_video);
   } else {
     _video - loadImage(file.data, play_video);
-    w = int(w_input.value());
-    h = int(h_input.value());
+    width = int(w_input.value());
+    height = int(h_input.value());
     w_input.hide();
     h_input.hide();
     div4.hide();
     div5.hide();
-    _video.size(w, h);
+    _video.size(width, height);
     _video.hide();
   }
   return _video;
@@ -207,9 +211,9 @@ function draw() {
 
   video.loadPixels();
   let html_ascii = "";
-  for (let j = 0; j < h; j++) {
-    for (let i = 0; i < w; i++) {
-      const pixelIndex = (i + j * w) * 4;
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width; i++) {
+      const pixelIndex = (i + j * width) * 4;
       const r = video.pixels[pixelIndex + 0];
       const g = video.pixels[pixelIndex + 1];
       const b = video.pixels[pixelIndex + 2];
