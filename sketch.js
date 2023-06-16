@@ -1,26 +1,17 @@
-// DOM Elements
+/* DOM Elements */
 let ascii_div;
-let lagtrain_button;
-let bad_apple_button;
-let webcam_button;
-let drop_video_button;
+// Volume Text, Volume Slider, "Character Set" text, character set input
+const preserved_header_settings = [];
+// Resolution Text, Width Input, div that says 'x', Height Input
+const initially_shown_not_preserved = [];
+// play/pause, redraw, seeker
+const initially_hidden = [];
+
 // todo implement algorithm for images
 //let drop_image_button;
 let duration_str;
-let drop_button;
-let char_input;
-let slider;
-let volumeText;
-let play_pause;
-let _redraw;
-let _divN;
 let seeker;
-let initial_time;
-let div4
-let div5
 let seeker_div;
-let w_input;
-let h_input;
 
 // Render Parameters
 let display_chars = ".#";
@@ -30,92 +21,93 @@ let height = 36;
 // Playback Variables
 let video;
 let looping = false;
-let videoNumber;
 let paused = false;
 
 // Other
-let drop_item_is_video = true;
 let video_exists = false;
 
 
 function setup() {
   noCanvas();
 
-  volumeText = createDiv("Volume: 100%<br />");
-  volumeText.parent("based");
-  slider = createSlider(0, 100, 100);
-  slider.parent("based");
-  slider.mouseMoved(updateVolume);
-  slider.mouseReleased(updateVolume);
+  preserved_header_settings[0] = createDiv("Volume: 100%<br />");
+  preserved_header_settings[1] = createSlider(0, 100, 100);
+  preserved_header_settings[1].mouseMoved(updateVolume);
+  preserved_header_settings[1].mouseReleased(updateVolume);
 
 
   //todo add a stop button
-  let mediaControls = createDiv();
+  const mediaControls = createDiv();
   mediaControls.parent("based");
-  play_pause = createButton("Pause");
-  play_pause.mousePressed(togglePlay);
-  play_pause.parent(mediaControls);
-  play_pause.addClass("media");
-  play_pause.hide();
-  _redraw = createButton("Redraw");
-  _redraw.mousePressed(redraw);
-  _redraw.parent(mediaControls);
-  _redraw.addClass("media");
-  _redraw.hide();
+  initially_hidden[0] = createButton("Pause");
+  initially_hidden[0].mousePressed(togglePlay);
+
+  initially_hidden[1] = createButton("Redraw");
+  initially_hidden[1].mousePressed(redraw);
+
   seeker_div = createDiv("<br />");
   seeker_div.parent(mediaControls);
   seeker_div.class("seeker");
   seeker_div.addClass("media");
-  initial_time = createDiv("0:00");
-  initial_time.parent(seeker_div);
-  initial_time.class("seeker");
-  initial_time.addClass("media");
-  initial_time.hide();
+  initially_hidden[2] = createDiv("0:00");
+  initially_hidden[2].parent(seeker_div);
+  initially_hidden[2].class("seeker");
+
+  for (let i = 0; i <= 1; i++) {
+    initially_hidden[i].parent(mediaControls);
+  }
+  for (let i = 0; i <= 2; i++) {
+    initially_hidden[i].addClass("media");
+    initially_hidden[i].hide();
+  }
   
-  div4 = createDiv("Resolution:<br />");
-  div4.parent(mediaControls);
-  w_input = createInput(str(width));
-  w_input.parent(mediaControls);
-  div5 = createDiv("x")
-  div5.parent(mediaControls)
-  h_input = createInput(str(height));
-  h_input.parent(mediaControls);
+  initially_shown_not_preserved[0] = createDiv("Resolution:<br />");
+  initially_shown_not_preserved[1] = createInput(str(width));
+  initially_shown_not_preserved[3] = createDiv("x")
+  initially_shown_not_preserved[2] = createInput(str(height));
+
+  for (let i = 0; i <= 3; i++) {
+    initially_shown_not_preserved[i].parent(mediaControls);
+  }
   
-  let _div = createDiv("<br />Character Set:");
-  _div.parent("based");
-  char_input = createInput(display_chars);
-  char_input.parent("based");
-  char_input.addClass("dingus");
-  let _div2 = createDiv("<br />");
-  _div2.parent("based");
-  let _div3 = createDiv("<br />");
+  preserved_header_settings[2] = createDiv("<br />Character Set:");
+  preserved_header_settings[3] = createInput(display_chars);
+  preserved_header_settings[3].addClass("dingus");
+  preserved_header_settings[4] = createDiv("<br />");
+  preserved_header_settings[5] = createDiv("<br />");
   ascii_div = createDiv("ASCII Video by Siri-chan");
+  initially_shown_not_preserved[4] = createDiv("<br />");
   spawn_buttons();
   //for some reason this tries to autoplay even when i explicitlyhave autoplay(false);
   looping = false;
   noLoop();
+
+  for (let i = 0; i <= 4; i++) {
+    preserved_header_settings[i].parent("based");
+  }
 }
 
 function togglePlay() {
   paused = !paused;
   if (paused) {
-    play_pause.html("Play");
+    initially_hidden[0].html("Play");
     video.pause();
     noLoop();
   } else {
-    play_pause.html("Pause");
+    initially_hidden[0].html("Pause");
     video.loop();
     loop();
   }
 }
 
 function video_generics(_video) {
-  width = int(w_input.value());
-  height = int(h_input.value());
-  w_input.hide();
-  h_input.hide();
-  div4.hide();
-  div5.hide();
+  width = int(initially_shown_not_preserved[1].value());
+  height = int(initially_shown_not_preserved[2].value());
+
+  for (let i = 0; i <= 3; i++) {
+    initially_shown_not_preserved[i].hide();
+  }
+
   _video.autoplay(false);
   //video1.volume(0);
   _video.size(width, height);
@@ -124,90 +116,62 @@ function video_generics(_video) {
 }
 
 function load_lagtrain() {
-  let _video = createVideo("lagtrain.mp4", play_video);
+  const _video = createVideo("lagtrain.mp4", play_video);
   video_generics(_video);
   return _video;
 }
 
 function load_bad_apple() {
-  let _video = createVideo("badapple.mp4", play_video);
+  const _video = createVideo("badapple.mp4", play_video);
   video_generics(_video);
   return _video;
 }
 
 function spawn_buttons() {
-  lagtrain_button = createButton("Play Lagtrain")
-  lagtrain_button.mousePressed(play_lagtrain);
-  bad_apple_button = createButton("Play Bad Apple")
-  bad_apple_button.mousePressed(play_badapple);
-  webcam_button = createButton("Play Webcam [WIP]")
-  webcam_button.addClass('disabled');
-  //button3.mousePressed(play_webcam);
-  _divN = createDiv("<br />");
-  /*
-  drop_image_button = createButton("Drop an Image File")
-  drop_image_button.mousePressed(clickImageDropButton);
-  show_inline(drop_image_button);
-  drop_image_button.style("width: 50%;")
-  */
-  drop_video_button = createButton("Drop a Video File")
-  drop_video_button.mousePressed(clickVideoDropButton);
-  show_inline(drop_video_button);
-  drop_video_button.style("width: 50%;")
-  drop_button
+  initially_shown_not_preserved[5] = createButton("Play Lagtrain")
+  initially_shown_not_preserved[5].mousePressed(play_lagtrain);
+  initially_shown_not_preserved[6] = createButton("Play Bad Apple")
+  initially_shown_not_preserved[6].mousePressed(play_badapple);
+  initially_shown_not_preserved[7] = createDiv("<br />");
+  initially_shown_not_preserved[8] = createButton("Drop a Video File")
+  initially_shown_not_preserved[8].mousePressed(clickVideoDropButton);
+  show_inline(initially_shown_not_preserved[8]);
+  initially_shown_not_preserved[8].style("width: 50%;")
 }
 
-function clickImageDropButton() {
-  drop_item_is_video = false; 
-  clickDropButton();
-}
-function clickVideoDropButton() {
-  drop_item_is_video = true;
+clickVideoDropButton = () => {
   clickDropButton();
 }
 
 function clickDropButton() {
-  drop_video_button.remove();
+  initially_shown_not_preserved[8].remove();
   //drop_image_button.remove();
-  drop_button = createButton("Drop a File Here")
-  drop_button.drop(play_dropped_video);
-  drop_button.class("drop_here");
+  initially_shown_not_preserved[9] = createButton("Drop a File Here")
+  initially_shown_not_preserved[9].drop(play_dropped_video);
+  initially_shown_not_preserved[9].class("drop_here");
 }
 
 function load_dropped_video(file) {
   // file.data is the binary stream
   // according to the docs for Element.drop() this should work
-  drop_button.remove();
-  let _video;
-  if (drop_item_is_video) {
-    _video = createVideo(file.data, play_video);
-    video_generics(_video);
-  } else {
-    _video - loadImage(file.data, play_video);
-    width = int(w_input.value());
-    height = int(h_input.value());
-    w_input.hide();
-    h_input.hide();
-    div4.hide();
-    div5.hide();
-    _video.size(width, height);
-    _video.hide();
-  }
+  initially_shown_not_preserved[9].remove();
+  const _video = createVideo(file.data, play_video);
+  video_generics(_video);
   return _video;
 }
 
 function updateVolume() {
-   let _volume = slider.value();
-  volumeText.html("Volume: " + str(_volume) + "%<br />");
+  const _volume = preserved_header_settings[1].value();
+  preserved_header_settings[0].html("Volume: " + str(_volume) + "%<br />");
   if (video_exists)
-  video.volume(_volume/100);
+    video.volume(_volume/100);
 }
 
 function draw() {
   if (!looping) return;
 
-  display_chars = char_input.value();
-  initial_time.html(seconds_to_minutes(seeker.value()));
+  display_chars = preserved_header_settings[3].value();
+  initially_hidden[2].html(seconds_to_minutes(seeker.value()));
 
   video.loadPixels();
   let html_ascii = "";
@@ -223,8 +187,8 @@ function draw() {
         avg = constrain(avg, 0, 764.9);
       }
       const len = display_chars.length;
-      let charIndex = floor(map(avg, 0, 765, 0, len));
-      let cchar = display_chars.charAt(charIndex);
+      const charIndex = floor(map(avg, 0, 765, 0, len));
+      const cchar = display_chars.charAt(charIndex);
       if (cchar == " ") html_ascii += "&nbsp;";
       else html_ascii += cchar;
     }
@@ -234,13 +198,11 @@ function draw() {
 }
 
 function play_lagtrain() {
-  videoNumber = 1;
   play_generics();
   video = load_lagtrain();
 }
 
 function play_badapple() {
-  videoNumber = 2;
   play_generics();
   video = load_bad_apple();
 }
@@ -253,67 +215,59 @@ function play_dropped_video(file) {
   + "I suggest using ffmpeg to convert the file to MP4 or WEBM, as I know for certain they are supported.\n"
   + "4: If you delete the video file on your computer, it will stop playing.\n\n"
   + "By pressing OK, you are willing to try an experimental feature, and are able to fix these common bugs.");
-  videoNumber = 3;
   play_generics();
   video = load_dropped_video(file);
-  _divN.remove();
+  initially_shown_not_preserved[7].remove();
 }
 
 function play_generics() {
-  lagtrain_button.html('Loading...');
-  lagtrain_button.addClass("disabled");
-  bad_apple_button.remove();
-  webcam_button.remove();
-  drop_video_button.remove();
+  initially_shown_not_preserved[5].html('Loading...');
+  initially_shown_not_preserved[5].addClass("disabled");
+  initially_shown_not_preserved[6].remove();
+  initially_shown_not_preserved[8].remove();
   video_exists = true;
 }
 
-function play_webcam() {
-  //todo
-}
+//todo play_webcam
 
-function show_inline(element){
+show_inline = (element) => {
   element.show();
   element.style("display: inline;");
 }
 
 function play_video() {
-  lagtrain_button.remove();
-  show_inline(play_pause);
-  show_inline(_redraw);
-  show_inline(initial_time);
-  if (drop_item_is_video) {
-    let _duration = video.duration();
-    //todo tweak seeker style
-    seeker = createSlider(0, _duration, 1, 0);
-    seeker.parent(seeker_div);
-    //todo make seeker have onchange rather than checking every update + also use a nicer monospace ffont for the time display
-    seeker.class("seeker");
-    seeker.addClass("media");
-    duration_str = createDiv(seconds_to_minutes(_duration));
-    duration_str.parent(seeker_div);
-    duration_str.class("seeker");
-    duration_str.addClass("media");
-    let seek_btn = createButton("Seek");
-    seek_btn.parent(seeker_div);
-    seek_btn.style("display:block; font-family: 'Overpass', sans-serif; font-size: 10px");
-    seek_btn.mousePressed(seek);
-    seek_btn.class("seeker");
-    seek_btn.addClass("media");
+  initially_shown_not_preserved[5].remove();
+  for (let i = 0; i <= 2; i++) {
+  show_inline(initially_hidden[1]);
   }
+  const _duration = video.duration();
+  //todo tweak seeker style
+  seeker = createSlider(0, _duration, 1, 0);
+  seeker.parent(seeker_div);
+  //todo make seeker have onchange rather than checking every update + also use a nicer monospace ffont for the time display
+  seeker.class("seeker");
+  seeker.addClass("media");
+  duration_str = createDiv(seconds_to_minutes(_duration));
+  duration_str.parent(seeker_div);
+  duration_str.class("seeker");
+  duration_str.addClass("media");
+  const seek_btn = createButton("Seek");
+  seek_btn.parent(seeker_div);
+  seek_btn.style("display:block; font-family: 'Overpass', sans-serif; font-size: 10px");
+  seek_btn.mousePressed(seek);
+  seek_btn.class("seeker");
+  seek_btn.addClass("media");
   looping = true;
   loop();
   video.loop();
 }
 
-function seek() {
-  video.time(seeker.value());
-}
+seek = () => video.time(seeker.value());
 
 function seconds_to_minutes(n) {
-  let minutes = floor(n/60);
-  let seconds = floor(n%60);
-  let ms = floor(((n%60) * 100) - (seconds * 100));
+  const minutes = floor(n/60);
+  const seconds = floor(n%60);
+  const ms = floor(((n%60) * 100) - (seconds * 100));
   let seconds_str = str(seconds);
   if (seconds < 10) {
     seconds_str = "0" + seconds_str;
