@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "lib": ["ES2022"],
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "preserveConstEnums": true,
+        "outDir": "./js",
+        "removeComments": true,
+        "sourceMap": true
+    },
+    "files": [
+        "ts/sketch.ts",
+        "ts/dom.ts",
+    ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "ascii-video-html",
+  "version": "1.0.0",
+  "description": "This is a thing that plays video in ASCII.\r It expects a video file, and only renders in black and white.\r Because of browser nonsence, the program will only load videos hosted outside of file://. this means that you will need a http server to serve the videos, even if youre only serving on localhost",
+  "main": "sketch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Siri-chan/ascii-video-html.git"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/Siri-chan/ascii-video-html/issues"
+  },
+  "homepage": "https://github.com/Siri-chan/ascii-video-html#readme",
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "@types/p5": "^1.6.2",
+    "p5": "^1.6.0"
+  }
+}
