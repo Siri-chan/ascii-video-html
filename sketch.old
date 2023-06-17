@@ -38,7 +38,7 @@ function setup() {
 
   //todo add a stop button
   const mediaControls = createDiv();
-  mediaControls.parent("based");
+  mediaControls.parent("root");
   initially_hidden[0] = createButton("Pause");
   initially_hidden[0].mousePressed(togglePlay);
 
@@ -83,7 +83,7 @@ function setup() {
   noLoop();
 
   for (let i = 0; i <= 4; i++) {
-    preserved_header_settings[i].parent("based");
+    preserved_header_settings[i].parent("root");
   }
 }
 

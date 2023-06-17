@@ -4,6 +4,9 @@ serve.bat
 ### VSCode Configs ###
 .vscode
 
+### TSC Artifacts ###
+js/*.d.ts
+js/*.js.map
 
 # (yoinked from https://www.toptal.com/developers/gitignore/api/node)
 ### Node ###
