@@ -1,16 +1,15 @@
 {
     "compilerOptions": {
         "declaration": true,
-        "lib": ["ES2022"],
-        "module": "commonjs",
+        "lib": ["DOM", "ES2022"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "esModuleInterop": true,
         "noImplicitAny": false,
         "preserveConstEnums": true,
+        "rootDir": "./ts",
         "outDir": "./js",
         "removeComments": true,
         "sourceMap": true
-    },
-    "files": [
-        "ts/sketch.ts",
-        "ts/dom.ts",
-    ]
+    }
 }
