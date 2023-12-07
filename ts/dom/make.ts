@@ -1,6 +1,6 @@
 import p5 from 'p5';
 
-import _p5 from '../sketch.js';
+import {state, _p5} from '../sketch.js';
 
 import * as dom from '../dom.js';
 
@@ -34,6 +34,7 @@ export function makeMediaControls(): dom.MediaControls {
         parent_div: parent,
         buttons: makeButtons(parent),
         seeker: makeSeeker(parent),
+        resolution: makeResolution(parent)
     }
 }
 
@@ -95,4 +96,91 @@ function makeSeekerTime(seeker_div: p5.Element): p5.Element {
     time.addClass(dom.MEDIA_CLASS);
     time.hide();
     return time;
+}
+
+function makeResolution(mediaControls: p5.Element): dom.Resolution {
+    return {
+        header: makeResolutionHeader(mediaControls),
+        w: makeResolutionWidth(mediaControls),
+        cross: makeResolutionCross(mediaControls),
+        h: makeResolutionHeight(mediaControls),
+        br: dom.br()
+    }
+}
+
+function makeResolutionHeader(mediaControls: p5.Element): p5.Element {
+    let header = _p5.createDiv("Resolution:<br />");
+    header.parent(mediaControls);
+    return header;
+}
+
+function makeResolutionWidth(mediaControls: p5.Element): p5.Element {
+    let input = _p5.createInput(state.width.toString());
+    input.parent(mediaControls);
+    return input;
+}
+
+function makeResolutionCross(mediaControls: p5.Element): p5.Element {
+    let header = _p5.createDiv("×");
+    header.parent(mediaControls);
+    return header;
+}
+
+function makeResolutionHeight(mediaControls: p5.Element): p5.Element {
+    let input = _p5.createInput(state.height.toString());
+    input.parent(mediaControls);
+    return input;
+}
+
+export function makeCharacterSelector(): dom.CharacterSelector {
+    let cs = {
+        header: makeCharacterSelectorHeader(),
+        input: makeCharacterSelectorInput(),
+        br1: dom.br(),
+        br2: dom.br(),
+    }
+    cs.br1.parent(dom.ROOT_ELEMENT_ID);
+    cs.br2.parent(dom.ROOT_ELEMENT_ID);
+    return cs;
+}
+
+function makeCharacterSelectorHeader(): p5.Element {
+    let header =  _p5.createDiv("<br />Character Set:")
+    header.parent(dom.ROOT_ELEMENT_ID);
+    return header;
+}
+
+function makeCharacterSelectorInput(): p5.Element {
+    let input = _p5.createInput(state.display_chars);
+    input.parent(dom.ROOT_ELEMENT_ID);
+    return input;
+}
+
+export function makeItemSelector(): dom.ItemSelector {
+    return {
+        lagtrain: makeLagtrainButton(),
+        bad_apple: makeBadAppleButton(),
+        br: dom.br(),
+        video_file: makeDropVideoButton()
+    }
+}
+
+function makeLagtrainButton(): p5.Element {
+    let button = _p5.createButton("Play Lagtrain");
+    button.mousePressed(/* TODO: need to write a `play_lagtrain` function */ () => {});
+    return button;
+}
+
+function makeBadAppleButton(): p5.Element {
+    let button = _p5.createButton("Play Bad Apple");
+    button.mousePressed(/* TODO: need to write a `play_badapple` function */ () => {});
+    return button;
+}
+
+function makeDropVideoButton(): p5.Element {
+    let button = _p5.createButton("Drop a Video File");
+    button.mousePressed(/* TODO: need to write a `clickDropButton` function */ () => {});
+    button.show();
+    button.style("display: inline; width: 50%;");
+    return button;
 }

@@ -1,5 +1,6 @@
-import _p5 from './sketch.js';
+import {_p5} from './sketch.js';
 import p5 from 'p5';
+import * as make from './dom/make.js';
 
 export * from './dom/make.js';
 
@@ -12,6 +13,9 @@ export const br = () => _p5.createDiv("<br />");
 export interface UI {
     volume: Volume,
     controls: MediaControls,
+    chars: CharacterSelector,
+    ascii_div: p5.Element,
+    item_selectors: ItemSelector,
 }
 
 export interface Volume {
@@ -24,6 +28,7 @@ export interface MediaControls {
     parent_div: p5.Element,
     buttons: MediaButtons,
     seeker: Seeker,
+    resolution: Resolution,
 }
 
 export interface MediaButtons {
@@ -41,4 +46,30 @@ export interface Resolution {
     w: p5.Element,
     cross: p5.Element,
     h: p5.Element,
+    br
+}
+
+export interface CharacterSelector {
+    header: p5.Element,
+    input: p5.Element,
+    br1,
+    br2
+}
+
+export interface ItemSelector {
+    lagtrain: p5.Element,
+    bad_apple: p5.Element,
+    br,
+    video_file: p5.Element
+}
+
+
+export function makeUI(): UI {
+    return {
+        volume: make.makeVolume(),
+        controls: make.makeMediaControls(),
+        chars: make.makeCharacterSelector(),
+        ascii_div: _p5.createDiv("ASCII Video by Siri-chan"),
+        item_selectors: make.makeItemSelector(),
+    }
 }
