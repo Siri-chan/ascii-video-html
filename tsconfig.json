@@ -20,5 +20,6 @@
         "noImplicitAny": false,
         "preserveConstEnums": true,
     },
-    "include": ["./ts"]
+    "include": ["./ts"],
+    "files": ["./global.d.ts"]
 }

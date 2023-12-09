@@ -1,17 +1,13 @@
 import p5 from 'p5';
 
-import {state, _p5} from '../sketch.js';
-
-import * as dom from '../dom.js';
+import { state, _p5 } from '../sketch';
+import * as dom from '../dom';
+import { togglePlay, updateVolume, load_video } from '../video';
 
 export function makeVolume(): dom.Volume {
     return {
         text: makeVolumeText(),
         slider: makeVolumeSlider(),
-        foreach_element: (self, func) => {
-            func(self.text);
-            func(self.slider);
-        }
     };
 }
 
@@ -20,11 +16,9 @@ function makeVolumeText(): p5.Element {
 }
 
 function makeVolumeSlider(): p5.Element {
-    const slider = _p5.createSlider(0, 100, 100);
-    /* todo write these
+    const slider = _p5.createSlider(0, 100, state.volume);
     slider.mouseMoved(updateVolume);
     slider.mouseReleased(updateVolume);
-    */
     return slider;
 }
 
@@ -56,9 +50,7 @@ function makePlayPauseButton(mediaControls: p5.Element): p5.Element {
     play_pause.parent(mediaControls);
     play_pause.addClass(dom.MEDIA_CLASS);
     play_pause.hide();
-    /* todo write these
-    initially_hidden[0].mousePressed(togglePlay);
-    */
+    play_pause.mousePressed(togglePlay);
     return play_pause;
 }
 
@@ -67,9 +59,7 @@ function makeRedrawButton(mediaControls: p5.Element): p5.Element {
     redraw.parent(mediaControls);
     redraw.addClass(dom.MEDIA_CLASS);
     redraw.hide();
-    /* todo write these
-    initially_hidden[0].mousePressed(redraw);
-    */
+    redraw.mousePressed(_p5.redraw);
     return redraw;
 }
 
@@ -77,7 +67,10 @@ function makeSeeker(mediaControls: p5.Element): dom.Seeker {
     const seeker_div = makeSeekerDiv(mediaControls)
     return {
         seeker_div: seeker_div,
-        time: makeSeekerTime(seeker_div)
+        time: makeSeekerTime(seeker_div),
+        slider: makeSeekerSlider(seeker_div, 0),
+        duration: makeSeekerDuration(seeker_div),
+        seek_btn: makeSeekButton(seeker_div)
     };
 }
 
@@ -89,6 +82,15 @@ function makeSeekerDiv(mediaControls: p5.Element): p5.Element {
     return seeker_div;
 }
 
+export function makeSeekerSlider(seeker_div: p5.Element, duration: number): p5.Element {
+    let slider = _p5.createSlider(0, duration, 0, 0);
+    slider.parent(seeker_div);
+    slider.class(dom.SEEKER_CLASS);
+    slider.addClass(dom.MEDIA_CLASS);
+    slider.hide();
+    return slider;
+}
+
 function makeSeekerTime(seeker_div: p5.Element): p5.Element {
     let time = _p5.createDiv("0:00");
     time.parent(seeker_div);
@@ -98,13 +100,36 @@ function makeSeekerTime(seeker_div: p5.Element): p5.Element {
     return time;
 }
 
+function makeSeekerDuration(seeker_div: p5.Element): p5.Element {
+    let time = _p5.createDiv("0:00");
+    time.parent(seeker_div);
+    time.class(dom.SEEKER_CLASS);
+    time.addClass(dom.MEDIA_CLASS);
+    time.hide();
+    return time;
+}
+
+function makeSeekButton(seeker_div: p5.Element): p5.Element {
+    const seek_btn = _p5.createButton("Seek");
+    seek_btn.parent(seeker_div);
+    seek_btn.style("display:block; font-family: 'Overpass', sans-serif; font-size: 10px");
+    seek_btn.mousePressed(() => {
+        if (!state.ui || !state.video) return
+        state.video.time(parseFloat(state.ui.controls.seeker.slider.value().toString()))
+    });
+    seek_btn.class("seeker");
+    seek_btn.addClass("media");
+    seek_btn.hide()
+    return seek_btn;
+}
+
 function makeResolution(mediaControls: p5.Element): dom.Resolution {
     return {
         header: makeResolutionHeader(mediaControls),
         w: makeResolutionWidth(mediaControls),
         cross: makeResolutionCross(mediaControls),
         h: makeResolutionHeight(mediaControls),
-        br: dom.br()
+        br: dom.br(),
     }
 }
 
@@ -145,7 +170,7 @@ export function makeCharacterSelector(): dom.CharacterSelector {
 }
 
 function makeCharacterSelectorHeader(): p5.Element {
-    let header =  _p5.createDiv("<br />Character Set:")
+    let header = _p5.createDiv("<br />Character Set:")
     header.parent(dom.ROOT_ELEMENT_ID);
     return header;
 }
@@ -167,19 +192,19 @@ export function makeItemSelector(): dom.ItemSelector {
 
 function makeLagtrainButton(): p5.Element {
     let button = _p5.createButton("Play Lagtrain");
-    button.mousePressed(/* TODO: need to write a `play_lagtrain` function */ () => {});
+    button.mousePressed(() => load_video("lagtrain.mp4"));
     return button;
 }
 
 function makeBadAppleButton(): p5.Element {
     let button = _p5.createButton("Play Bad Apple");
-    button.mousePressed(/* TODO: need to write a `play_badapple` function */ () => {});
+    button.mousePressed(() => load_video("badapple.mp4"));
     return button;
 }
 
 function makeDropVideoButton(): p5.Element {
     let button = _p5.createButton("Drop a Video File");
-    button.mousePressed(/* TODO: need to write a `clickDropButton` function */ () => {});
+    button.mousePressed(/* TODO: need to write a `clickDropButton` function */() => { });
     button.show();
     button.style("display: inline; width: 50%;");
     return button;
